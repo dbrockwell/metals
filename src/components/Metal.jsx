@@ -1,32 +1,40 @@
 import React, { Component } from 'react';
 import Avatar from '@mui/material/Avatar';
-import { amber, blue } from '@mui/material/colors';
+import { blue, red } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
-import { Add } from '@mui/icons-material';
+import { Add, Remove } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
 
 class Metal extends Component { 
     state = {
-        metal: "Gold Metals",
-        number: 0,
+        count: this.props.count
     }
 
-    handleClick = () => { 
-        this.setState({ number: this.state.number + 1})
+    addMetal = () => { 
+        this.setState({ count: this.state.count + 1})
+    }
+
+    subtractMetal = () => { 
+        this.setState({ count: this.state.count - 1})
     }
 
     render() {
         return (
-            <div>
+            <div class="metal">
                 <Stack direction="row" spacing={1}>
-                <Avatar sx={{ bgcolor: amber[500] }}>{this.state.number}</Avatar>
+                <Avatar sx={{ bgcolor: this.props.color }}>{this.state.count}</Avatar>
                 <Typography sx={{ pt: 1, pr:6}}>
-                    {this.state.metal}
+                    {this.props.metal} Metals
                 </Typography>
-                <IconButton aria-label="delete" onClick={ this.handleClick } sx={{ color: blue[500] }}>
+                <div class="buttons">
+                <IconButton aria-label="delete" onClick={ this.addMetal } sx={{ color: blue[500] }}>
                     <Add />
                 </IconButton>
+                <IconButton disabled={this.state.count === 0 ? true : false} aria-label="delete" onClick={ this.subtractMetal } sx={{ color: red[500] }}>
+                    <Remove />
+                </IconButton>
+                </div>
                 </Stack>
             </div>
         );
