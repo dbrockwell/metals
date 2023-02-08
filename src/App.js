@@ -1,6 +1,8 @@
-import { AppBar, Badge, Grid, Toolbar, Typography } from '@mui/material';
+import { AppBar, Chip, Grid, Toolbar, Typography } from '@mui/material';
+import { Stack } from '@mui/system';
 import React, { Component } from 'react';
 import './App.css';
+import AddCountry from './components/AddCountry';
 import Country from './components/Country';
 
 class App extends Component {
@@ -29,17 +31,28 @@ class App extends Component {
     const bronze = this.state.countries.reduce((a, b) => a + b.bronze, 0);
     return gold + silver + bronze
   }
+  deleteCountry = (countryId) => {
+    const countries = this.state.countries.filter(w => w.id !== countryId);
+    this.setState({ countries:countries });
+  }
+  handleAdd = (country) => {
+    const { countries } = this.state;
+    const id = countries.length === 0 ? 1 : Math.max(...countries.map(country => country.id)) + 1;
+    const mutableCountries = countries.concat({ id: id, country: country, gold: 0, silver: 0, bronze: 0 });
+    this.setState({ countries:mutableCountries });
+  }
   render() { 
     return ( 
       <div className="App">
         <header className="App-header">
           <AppBar position="static">
             <Toolbar>
-              <Badge color="secondary" badgeContent={this.totalMetals()}>
+              <Stack direction="row" spacing={1}>
                 <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
                   Olympic Medals
                 </Typography>
-              </Badge>
+                <Chip label={this.totalMetals()} color="secondary" size="small"/>
+              </Stack>
             </Toolbar>
           </AppBar>
         </header>
@@ -50,9 +63,11 @@ class App extends Component {
                 country={ country }
                 add={this.addMetal}
                 subtract={this.subtractMetal}
+                onDelete={this.deleteCountry}
                 />
             )}
         </Grid>
+        <AddCountry onAdd={ this.handleAdd }/>
       </div>
      );
   }

@@ -3,8 +3,10 @@ import Metal from './Metal';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { Badge, Grid } from '@mui/material';
-import { amber , brown, grey } from '@mui/material/colors';
+import { Chip, Grid, IconButton } from '@mui/material';
+import { amber , brown, grey, red } from '@mui/material/colors';
+import { Stack } from '@mui/system';
+import { Delete } from '@mui/icons-material';
 
 class Country extends Component { 
 
@@ -13,16 +15,24 @@ class Country extends Component {
     }
 
     render() {
-        const { country, add, subtract } = this.props;
+        const { country, add, subtract, onDelete } = this.props;
         return (
             <div class="countryCard">
                 <Grid item>
-                <Card sx={{ maxWidth: 350 }}>
+                <Card sx={{ minWidth: 300 }}>
                 <CardContent>
-                <Badge color="secondary" badgeContent={this.total()}>
-                <Typography variant="h5"> {country.country} </Typography>
-                </Badge>
-                <hr></hr>
+                <Stack direction="row" justifyContent="space-between">
+                    <div>
+                    <Stack direction="row" spacing={1}>
+                    <Typography variant="h5"> {country.country} </Typography>
+                    <Chip label={this.total()} color="secondary" size="small"/>
+                    </Stack>
+                    </div>
+                    <IconButton aria-label="delete" onClick={ () => onDelete(country.id) } sx={{ color: red[500] }}>
+                        <Delete />
+                    </IconButton>
+                </Stack>
+                <hr/>
                 <Metal 
                 country={ country }
                 add={add}
