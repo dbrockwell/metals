@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Metal from './Metal';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -8,16 +8,14 @@ import { amber , brown, grey, red } from '@mui/material/colors';
 import { Stack } from '@mui/system';
 import { Delete } from '@mui/icons-material';
 
-class Country extends Component { 
+const Country = (props) => {
 
-    total() {
-        return this.props.country.gold + this.props.country.silver + this.props.country.bronze
+    const total = () => {
+        return props.country.gold + props.country.silver + props.country.bronze
     }
-
-    render() {
-        const { country, add, subtract, onDelete } = this.props;
+        const { country, add, subtract, onDelete } = props;
         return (
-            <div class="countryCard">
+            <div className="countryCard">
                 <Grid item>
                 <Card sx={{ minWidth: 300 }}>
                 <CardContent>
@@ -25,7 +23,7 @@ class Country extends Component {
                     <div>
                     <Stack direction="row" spacing={1}>
                     <Typography variant="h5"> {country.country} </Typography>
-                    <Chip label={this.total()} color="secondary" size="small"/>
+                    <Chip label={total()} color="secondary" size="small"/>
                     </Stack>
                     </div>
                     <IconButton aria-label="delete" onClick={ () => onDelete(country.id) } sx={{ color: red[500] }}>
@@ -59,7 +57,6 @@ class Country extends Component {
                 </Grid>
             </div>
         );
-    }
 }
 
 export default Country
