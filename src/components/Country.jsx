@@ -22,7 +22,7 @@ const Country = (props) => {
                 <Stack direction="row" justifyContent="space-between">
                     <div>
                     <Stack direction="row" spacing={1}>
-                    <Typography variant="h5"> {country.country} </Typography>
+                    <Typography variant="h5"> {country.name} </Typography>
                     <Chip label={total()} color="secondary" size="small"/>
                     </Stack>
                     </div>

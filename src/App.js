@@ -1,19 +1,20 @@
 import { AppBar, Chip, Grid, Toolbar, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './App.css';
 import AddCountry from './components/AddCountry';
 import Country from './components/Country';
 
 const App = () => {
   const [countries, setCountries] = useState([]);
+  const apiEndpoint = "https://medals-23-dab.azurewebsites.net/Api/country";
   useEffect(() => {
-    let fetchedCountries = [
-      { id: 1, country: 'United States', gold: 2, silver: 6, bronze: 12 },
-      { id: 2, country: 'China', gold: 3, silver: 5, bronze: 13 },
-      { id: 3, country: 'Germany', gold: 0, silver: 2, bronze: 8 },
-    ]
-    setCountries(fetchedCountries);
+    async function fetchData() {
+      const { data: fetchedWords } = await axios.get(apiEndpoint);
+      setCountries(fetchedWords);
+    }
+    fetchData();
   }, []);
   const addMetal = (countryId, metal) => {
     const countriesMutable = [...countries];
@@ -33,13 +34,23 @@ const App = () => {
     const bronze = countries.reduce((a, b) => a + b.bronze, 0);
     return gold + silver + bronze
   }
-  const deleteCountry = (countryId) => {
-    setCountries([...countries].filter(c => c.id !== countryId));
+  const deleteCountry = async (countryId) => {
+    const originalCountries = countries;
+    setCountries(countries.filter(w => w.id !== countryId));
+    try {
+      await axios.delete(`${apiEndpoint}/${countryId}`);
+    } catch(ex) {
+      if (ex.response && ex.response.status === 404) {
+        console.log("The record does not exist - it may have already been deleted");
+      } else { 
+        alert('An error occurred while deleting a country');
+        setCountries(originalCountries);
+      }
+    }
   }
-  const handleAdd = (country) => {
-    const id = countries.length === 0 ? 1 : Math.max(...countries.map(country => country.id)) + 1;
-    const mutableCountries = countries.concat({ id: id, country: country, gold: 0, silver: 0, bronze: 0 });
-    setCountries(mutableCountries);
+  const handleAdd = async (country) => {
+    const { data: post } = await axios.post(apiEndpoint, { name: country, gold: 0, silver: 0, bronze: 0 });
+    setCountries(countries.concat(post));
   }
     return ( 
       <div className="App">
