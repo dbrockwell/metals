@@ -12,3 +12,9 @@
 .buttons {
   float: right;
 }
+
+
+.delta {
+  color: red;
+  font-style: italic;
+}

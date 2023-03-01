@@ -4,16 +4,28 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Chip, Grid, IconButton } from '@mui/material';
-import { amber , brown, grey, red } from '@mui/material/colors';
+import { amber , brown, grey, red, blue } from '@mui/material/colors';
 import { Stack } from '@mui/system';
-import { Delete } from '@mui/icons-material';
+import { Delete, SaveAlt, Undo } from '@mui/icons-material';
 
 const Country = (props) => {
 
-    const total = () => {
-        return props.country.gold + props.country.silver + props.country.bronze
+    const { country, medals, add, subtract, onDelete, onSave, onReset } = props;
+
+    const total = (country, medals) => {
+        let sum = 0;
+        medals.forEach(medal => { sum += country[medal.name].page_value; });
+        return sum;
     }
-        const { country, add, subtract, onDelete } = props;
+    const renderSaveButton = () => {
+        let unsaved = false;
+        medals.forEach(medal => {
+          if (country[medal.name].page_value !== country[medal.name].saved_value) {
+            unsaved = true;
+          }
+        });
+        return unsaved;
+      }
         return (
             <div className="countryCard">
                 <Grid item>
@@ -23,12 +35,23 @@ const Country = (props) => {
                     <div>
                     <Stack direction="row" spacing={1}>
                     <Typography variant="h5"> {country.name} </Typography>
-                    <Chip label={total()} color="secondary" size="small"/>
+                    <Chip label={total(country, medals)} color="secondary" size="small"/>
                     </Stack>
                     </div>
-                    <IconButton aria-label="delete" onClick={ () => onDelete(country.id) } sx={{ color: red[500] }}>
-                        <Delete />
-                    </IconButton>
+                    { renderSaveButton() ?
+                        <React.Fragment>
+                        <IconButton aria-label="delete" onClick={ () => onSave(country.id) } sx={{ color: blue[500] }}>
+                            <SaveAlt />
+                        </IconButton>
+                        <IconButton aria-label="delete" onClick={ () => onReset(country.id) } sx={{ color: red[500] }}>
+                            <Undo />
+                        </IconButton>
+                        </React.Fragment>
+                        :
+                        <IconButton aria-label="delete" onClick={ () => onDelete(country.id) } sx={{ color: red[500] }}>
+                            <Delete />
+                        </IconButton>
+                    }
                 </Stack>
                 <hr/>
                 <Metal 
