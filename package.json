@@ -1,11 +1,12 @@
 {
   "name": "medals",
   "version": "0.1.0",
-  "homepage": "https://dbrockwell.github.io/metals",
+  "homepage": "https://dbrockwell.github.io/metals/",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@microsoft/signalr": "^7.0.3",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.6",
     "@mui/styled-engine-sc": "^5.11.0",
@@ -13,8 +14,10 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.3.4",
+    "jwt-decode": "^3.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^5.3.4",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.6",
     "web-vitals": "^2.1.4"

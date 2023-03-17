@@ -10,7 +10,7 @@ import { Delete, SaveAlt, Undo } from '@mui/icons-material';
 
 const Country = (props) => {
 
-    const { country, medals, add, subtract, onDelete, onSave, onReset } = props;
+    const { country, medals, add, subtract, onDelete, onSave, onReset, canPatch, canDelete } = props;
 
     const total = (country, medals) => {
         let sum = 0;
@@ -40,7 +40,7 @@ const Country = (props) => {
                     </div>
                     { renderSaveButton() ?
                         <React.Fragment>
-                        <IconButton aria-label="delete" onClick={ () => onSave(country.id) } sx={{ color: blue[500] }}>
+                        <IconButton aria-label="delete" onClick={ () => onSave(country.id, medals.name) } sx={{ color: blue[500] }}>
                             <SaveAlt />
                         </IconButton>
                         <IconButton aria-label="delete" onClick={ () => onReset(country.id) } sx={{ color: red[500] }}>
@@ -48,9 +48,9 @@ const Country = (props) => {
                         </IconButton>
                         </React.Fragment>
                         :
-                        <IconButton aria-label="delete" onClick={ () => onDelete(country.id) } sx={{ color: red[500] }}>
-                            <Delete />
-                        </IconButton>
+                        <div>{canDelete && <IconButton aria-label="delete" onClick={ () => onDelete(country.id) } sx={{ color: red[500] }}>
+                        <Delete />
+                        </IconButton>}</div>
                     }
                 </Stack>
                 <hr/>
@@ -59,6 +59,7 @@ const Country = (props) => {
                 add={add}
                 subtract={subtract}
                 metal={ country.gold }
+                canPatch={ canPatch }
                 metalName={ "Gold" }
                 color={ amber[500] }/>
                 <Metal 
@@ -66,6 +67,7 @@ const Country = (props) => {
                 add={add}
                 subtract={subtract}
                 metal={ country.silver }
+                canPatch={ canPatch }
                 metalName={ "Silver" }
                 color={ grey[400] }/>
                 <Metal 
@@ -73,6 +75,7 @@ const Country = (props) => {
                 add={add}
                 subtract={subtract}
                 metal={ country.bronze }
+                canPatch={ canPatch }
                 metalName={ "Bronze" }
                 color={ brown[500] }/>
                 </CardContent>

@@ -7,7 +7,7 @@ import { Add, Remove } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
 
 const Metal = (props) => {
-    const { country, add, subtract, color, metal, metalName } = props;
+    const { country, add, subtract, color, metal, metalName, canPatch } = props;
     return (
         <div className="metal">
             <Stack direction="row" justifyContent="space-between">
@@ -36,6 +36,7 @@ const Metal = (props) => {
                         }
                     </Stack>
                 </div>
+                { canPatch && 
                 <div className="buttons">
                     <IconButton aria-label="delete" onClick={ () => add(country.id, metalName.toLowerCase()) } sx={{ color: blue[500] }}>
                         <Add />
@@ -44,6 +45,7 @@ const Metal = (props) => {
                         <Remove />
                     </IconButton>
                 </div>
+                }
             </Stack>
         </div>
     );
